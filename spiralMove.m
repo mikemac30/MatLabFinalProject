@@ -1,5 +1,5 @@
 function [robo_obj] = spiralMove(robo_obj)
-%spiralMove Spiral Move
+%spiralMove moves the robot in a spiral
 %   takes robo_obj as input and preforms spiral move
 i = 0;%index
 vec = [-1 1];
