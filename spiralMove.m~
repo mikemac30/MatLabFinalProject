@@ -1,0 +1,18 @@
+function [robo_obj] = spiralMove(robo_obj)
+%UNTITLED3 Summary of this function goes here
+%   Detailed explanation goes here
+i = 0;
+vec = [-1 1]
+dir = vec(randi([1 2]));
+    while(robo_obj.away)
+        
+        robo_obj = turnStep(robo_obj,20*dir);
+        robo_obj = forwardStep(robo_obj,i);
+        if(robo_obj.heading <= 0.15 && robo_obj.heading >= -0.15)
+            fprintf(
+        i = i + 0.08;
+    end
+    %keep spiraling until we hit a wall
+    
+
+end

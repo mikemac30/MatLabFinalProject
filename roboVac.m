@@ -70,76 +70,67 @@ robo_obj.image = image('XData',[robo_obj.x-10 robo_obj.x+10],...
 tic
 % print elapsed time on figure title (DO NOT MODIFY!)
 robo_obj.time = title(['Elapsed time: ' num2str(toc,'%6.1f') ' s']);
+
+
 % initiate with spiral motion until hitting wall limit
+select_move = 3;%select move 3 for spiral for start
 
-
-
-select_move = 1;
+i = 1;
 % loop through moves until 5 min time limit is over
-while toc < 300  % (DO NOT MODIFY!)    
+while toc < 300  % (DO NOT MODIFY!)
     
-    
+    %moves are weighted evenly except for a move towards the center which
+    %has half the chance
     if select_move == 1
-        %spiral until something is hit
-        robo_obj = spiralMove(robo_obj);%
+        %move towards center with random distance offset and then spiral 
+        
+        robo_obj = moveTowardsCenter(robo_obj, randi([0 50]));
+        robo_obj = spiralMove(robo_obj);
+
     elseif select_move == 2
+        %move towards to the center
+        robo_obj = moveTowardsCenter(robo_obj, randi([0 20]));
+        
+        angle_Possiblities = [45 135 225 315];%possible angles
+        
+        %pick an angle from the possibilities
+        robo_obj.heading = angle_Possiblities(i);
+        
+        %move toward the corner (will stop when it hits something)
+        robo_obj = forwardMove(robo_obj, 5, 20);
+        
+        %spiral
+        robo_obj = spiralMove(robo_obj);
+        
+        %increment the index
+        i = i + 1;
+        
+        %start the index over if it gets too big
+        if(i > length(angle_Possiblities))
+            i = 1;
+        end
+        
+    elseif select_move == 3
+        %move in spiral
+        robo_obj = spiralMove(robo_obj);
+        
+        
+    elseif select_move == 4
+        %move along the closest wall 
+        robo_obj = wallCrawl(robo_obj);
+        
+    elseif select_move == 5
+        %move forward with random dir and speed
         robo_obj = forwardRandom(robo_obj);
-        
-    else
-        
     end
-        % after hitting wall limit, move backwards before switching moves
-    robo_obj = backwardMove(robo_obj,1,30); % UNCOMMENT WHEN AVAILABLE
-    %select_move = 2;
+    
+    % after hitting wall limit, move backwards before switching moves
+    robo_obj = backwardMove(robo_obj,1,30);
     
     
     % update elapsed time display
-    set(robo_obj.time,'String',['Elapsed time: ' num2str(toc,'%6.1f') ' s'])
+    set(robo_obj.time,'String',['Elapsed time: ' num2str(toc,'%6.1f') ' s' ])
+    
+    %pick random move
+    select_move = randi([1 5]);
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% % *** SELECT THIS BLOCK AND COMMENT (Ctrl+R) WHEN DONE WITH TESTING ***
-% % Square path
-% numSteps = 10;
-% xside = 40;
-% yside = 40;
-% xdistance = xside/numSteps;
-% ydistance = yside/numSteps;
-% angle = 90;
-% % initialize time
-% tic
-% robo_obj.time = title(['Elapsed time: ' num2str(toc,'%6.1f') ' s']);
-% 
-% 
-% 
-% % horizontal move to the right
-% robo_obj = forwardMove(robo_obj,xdistance,numSteps);
-% robo_obj = turnStep(robo_obj,angle);
-% % vertical move up
-% robo_obj = forwardMove(robo_obj,ydistance,numSteps);
-% robo_obj = turnStep(robo_obj,angle);
-% % horizontal move to the left
-% robo_obj = forwardMove(robo_obj,xdistance,numSteps);
-% robo_obj = turnStep(robo_obj,angle);
-% % vertical move down
-% robo_obj = forwardMove(robo_obj,ydistance,numSteps);

@@ -3,7 +3,7 @@ function robo_obj = forwardRandom(robo_obj)
 %   Moves the robot forward in a random direction with direction = 1, and
 %   random steps between 100 and 300
 if(robo_obj.away)
-    randDir = round(rand(1) * 360)
+    randDir = round(rand(1) * 360);
 
     randSteps = randi([100 300]);
 
